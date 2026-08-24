@@ -1,0 +1,272 @@
+/* Global */
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #1d2021;
+  --bg-alt: #282828;
+  --fg: #d4be98;
+  --accent: #7daea3;
+  --active: #89bf82;
+  --urgent: #ea6962;
+  
+  --orange: #e78a4e;
+  --yellow: #d8a657;
+  --purple: #d3869b;
+
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-xl: 80px;
+
+  --text-sm: 14px;
+  --text-md: 18px;
+  --text-lg: 24px;
+  --text-xl: 48px;
+}
+
+.button {
+  display: inline-block;
+  width: fit-content;
+
+  padding: 10px 20px;
+  
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  
+  color: var(--accent);
+  text-decoration: none;
+  
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.button:hover{
+  background-color: var(--accent);
+  color: var(--bg);
+  transform: translateY(-2px);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--active);
+  outline-offset: 4px;
+}
+
+/* Base */
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+
+/* Header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 40px;
+
+  background-color: var(--bg);
+  border-bottom: 1px solid var(--bg-alt);
+}
+
+.hero-title {
+  color: var(--accent);
+  margin: 0;
+}
+
+/* Navigation */
+.site-nav ul {
+  display: flex;
+  gap: var(--space-md);
+  list-style: none;
+
+  margin: 0;
+}
+
+.site-nav a {
+  display: inline-block;
+  
+  padding: 8px 4px;
+
+  color: var(--fg);
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.site-nav a:hover {
+  color: var(--accent);
+}
+
+.site-nav a:focus-visible {
+  outline: 2px solid var(--active);
+  outline-offset: 4px;
+}
+
+/* Hero */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.hero-content h2 {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.hero-description {
+  font-size: var(--text-md);
+  line-height: 1.6;
+}
+
+.hero-links {
+  display: flex;
+  gap: 15px;
+}
+
+.hero-image img {
+  width: 300px;
+  max-width: 100%;
+}
+
+.hero-image {
+  flex-shrink: 0;
+}
+
+/* Projects */
+.project-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-xl) 40px;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: var(--space-md);
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+
+  background-color: var(--bg-alt);
+  padding: var(--space-lg);
+  
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.project-card h3 {
+  margin: 0;
+  color: var(--accent);
+  font-size: var(--text-lg);
+}
+
+.project-card p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.project-card .button {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.25),
+    0 0 20px rgba(125, 174, 163, 0.08);
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.tag {
+  padding: 4px 10px;
+
+  background-color: var(--bg-alt);
+  border: 1px solid var(--purple);
+  border-radius: 999px;
+
+  color: var(--purple);
+  font-size: var(--text-sm);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .site-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .site-nav ul {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-image {
+    margin-top: 40px;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content h2 {
+    font-size: 32px;
+  }
+
+  .hero-description {
+    font-size: 17px;
+  }
+
+  .hero-links {
+    justify-content: center;
+  }
+}

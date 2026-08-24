@@ -1,0 +1,17 @@
+# OS files
+.DS_Store
+
+# Editor files
+.vscode/
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Node
+node_modules/
+
+# Build output
+dist/
+build/
