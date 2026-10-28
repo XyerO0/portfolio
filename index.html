@@ -1,129 +1,506 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en" data-theme="arch">
 <head>
-  <title>My Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Debanjan (Xyero.Dev) - Computer Science Undergraduate. Low-level systems, C/C++, Linux, and algorithm development. Seeking research internships at premier institutes (IITs, NITs, GFTIs).">
+  <title>Debanjan (Xyero.Dev) | Computer Science Student</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
+  <!-- Top Navigation Header -->
   <header class="site-header">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <a href="#hero" class="brand-logo">
+          <span class="brand-handle">xyero.dev</span>
+          <span style="color: var(--fg-faint);">//</span>
+          <span>debanjan</span>
+        </a>
+        <div class="internship-badge" title="Seeking Research Internships">
+          <span class="pulse-dot"></span>
+          <span>open to internships</span>
+        </div>
+      </div>
 
-    <h1 class="hero-title">Debanjan</h1>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#academics">academics</a></li>
+          <li><a href="#projects">projects</a></li>
+          <li><a href="#skills">skills</a></li>
+          <li><a href="#fastfetch">system</a></li>
+          <li><a href="#contact">contact</a></li>
+        </ul>
+      </nav>
 
-    <nav class="site-nav">
-      <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#interests">Interests</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-
+      <div class="nav-actions">
+        <button id="themeToggle" class="btn-theme" type="button" title="Switch Theme">theme: arch</button>
+      </div>
+    </div>
   </header>
 
-  <main>
+  <!-- Wide Content Wrapper (Spans full browser display) -->
+  <main class="page-container">
 
-    <section class="hero" id="about">
+    <!-- ======================================================================
+         Hero Section: Wide 2-Column Split (Pitch + Fastfetch Window)
+         ====================================================================== -->
+    <section class="hero-grid" id="hero">
 
-      <div class="hero-content">
-
-        <h2>Hi, I'm Debanjan.</h2>
-
-        <p class="hero-description">
-          I am a Computer Science student and I love Linux!
-        </p>
-
-        <div class="hero-links">
-          <a class="button" href="https://github.com">GitHub</a>
-          <a class="button" href="https://linkedin.com">LinkedIn</a>
+      <!-- Left Column: Introduction & Credentials -->
+      <div class="hero-intro">
+        <div class="hero-meta-tag">
+          <span>B.Tech Computer Science Undergraduate</span>
         </div>
 
+        <div class="hero-name-block">
+          <h1 class="hero-realname">Debanjan</h1>
+          <div class="hero-alias">Xyero.Dev &bull; Systems &amp; Low-Level Enthusiast</div>
+        </div>
+
+        <p class="hero-pitch">
+          Computer Science student passionate about <strong>C</strong>, <strong>C++</strong>, <strong>low-level systems</strong>, and <strong>operating systems</strong> fundamentals. Daily driver is <strong>Arch Linux</strong> with <strong>Neovim</strong>. Focused on writing efficient, uncluttered code and building solid foundational knowledge in algorithms and systems software.
+        </p>
+
+        <!-- Internship / Research Target Callout -->
+        <div class="internship-callout">
+          <span class="callout-title">Research &amp; Summer Internship Objective</span>
+          <span class="callout-body">
+            Actively seeking research internships and software development opportunities at premier academic institutions (IITs, NITs, GFTIs) and technology labs in systems programming, operating systems, and algorithmic computing.
+          </span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="hero-cta">
+          <a href="#contact" class="btn-primary">contact debanjan -></a>
+          <a href="#projects" class="btn-secondary">view projects</a>
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn-secondary">github profile</a>
+        </div>
       </div>
 
-      <div class="hero-image">
-        <img src="images/archLinux.png" alt="Arch Linux">
+      <!-- Right Column: Aesthetic Fastfetch Terminal -->
+      <div class="fastfetch-window" id="fastfetch">
+        <div class="terminal-titlebar">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <div class="window-title">xyero@archlinux: ~ (fastfetch)</div>
+          <div class="window-env">bash</div>
+        </div>
+
+        <div class="fastfetch-body">
+          <div class="fastfetch-prompt-line">
+            <span class="p-user">xyero</span><span style="color: var(--fg-faint);">@</span><span class="p-host">archlinux</span>
+            <span class="p-dir">~</span>
+            <span style="color: var(--accent);">$</span>
+            <span class="p-cmd">fastfetch</span>
+          </div>
+
+          <div class="fastfetch-content">
+            <!-- Compact Aesthetic ASCII Art -->
+            <pre class="ascii-mini" aria-hidden="true">
+      /\
+     /  \
+    /\   \
+   /      \
+  /   ,,   \
+ /   |  |  -\
+/_-''    ''-_/
+            </pre>
+
+            <!-- Fastfetch Specifications Table -->
+            <div class="fastfetch-specs">
+              <div class="specs-title">Debanjan (Xyero.Dev)</div>
+              <div class="specs-divider">------------------------------</div>
+
+              <div class="spec-row">
+                <span class="spec-key">Role</span>
+                <span class="spec-val">CS Undergraduate Student</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">OS</span>
+                <span class="spec-val">Arch Linux x86_64</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Host</span>
+                <span class="spec-val">Debanjan Workstation</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Kernel</span>
+                <span class="spec-val">Linux (rolling)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Shell</span>
+                <span class="spec-val">bash / zsh</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Editor</span>
+                <span class="spec-val">Neovim (LSP)</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Languages</span>
+                <span class="spec-val">C, C++, Python, Bash</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Focus</span>
+                <span class="spec-val">Systems, DSA, OS Concepts</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-key">Status</span>
+                <span class="spec-val" style="color: var(--green);">Open for Research Internships</span>
+              </div>
+
+              <!-- ANSI Palette -->
+              <div class="ansi-palette">
+                <span class="ansi-color" style="background: #282828;"></span>
+                <span class="ansi-color" style="background: var(--red);"></span>
+                <span class="ansi-color" style="background: var(--green);"></span>
+                <span class="ansi-color" style="background: var(--yellow);"></span>
+                <span class="ansi-color" style="background: var(--accent);"></span>
+                <span class="ansi-color" style="background: var(--purple);"></span>
+                <span class="ansi-color" style="background: #38bdf8;"></span>
+                <span class="ansi-color" style="background: #e2e8f0;"></span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
     </section>
 
-    <section id="interests">
-      <h2>My Interests</h2>
-      <ul>
-        <li>Programming</li>
-        <li>Gaming</li>
-        <li>Bodybuilding</li>
-      </ul>
+    <!-- ======================================================================
+         Section 1: Academics & Research Focus (Crucial for IIT/NIT applications)
+         ====================================================================== -->
+    <section class="section-wrapper" id="academics">
+      <div class="section-header-block">
+        <h2 class="section-heading">01 // Academics &amp; Research Interests</h2>
+        <span class="section-tagline">Undergraduate Computer Science Foundations</span>
+      </div>
+
+      <div class="academics-grid">
+        <!-- Degree & Institution Info -->
+        <div class="academic-card">
+          <span class="academic-badge">Academic Pursuit</span>
+          <h3 class="academic-degree">Bachelor of Technology (B.Tech)</h3>
+          <p class="academic-desc">
+            Computer Science &amp; Engineering undergraduate student. Focused on building a rigorous foundation in computational theory, memory management, low-level architecture, and algorithm analysis.
+          </p>
+
+          <span style="font-size: 11.5px; color: var(--accent); font-weight: 600; margin-top: 4px;">Core Coursework:</span>
+          <div class="coursework-list">
+            <span class="course-tag">Data Structures &amp; Algorithms</span>
+            <span class="course-tag">Operating Systems</span>
+            <span class="course-tag">Computer Architecture</span>
+            <span class="course-tag">Object-Oriented Programming (C++)</span>
+            <span class="course-tag">Database Management</span>
+            <span class="course-tag">Discrete Mathematics</span>
+          </div>
+        </div>
+
+        <!-- Areas of Research Focus -->
+        <div class="academic-card">
+          <span class="academic-badge">Research &amp; Technical Focus</span>
+          <h3 class="academic-degree">Target Research Domains</h3>
+          <p class="academic-desc">
+            Preparing for undergraduate research opportunities, summer research fellowships (SRFP), and technical internships across IITs, NITs, and premier labs in the following sub-fields:
+          </p>
+
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--fg); margin-top: 4px;">
+            <li><span style="color: var(--accent);">-></span> Systems Programming &amp; Low-Level Software (C / C++)</li>
+            <li><span style="color: var(--accent);">-></span> Operating Systems Concepts &amp; Linux Kernel Exploration</li>
+            <li><span style="color: var(--accent);">-></span> Data Structure Efficiency &amp; Algorithmic Optimization</li>
+            <li><span style="color: var(--accent);">-></span> Unix Philosophy &amp; Command-Line Tool Architecture</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
-    <section class="project-section" id="projects">
-      <h2>Projects</h2>
+    <!-- ======================================================================
+         Section 2: Projects (Wide 3-Card Grid)
+         ====================================================================== -->
+    <section class="section-wrapper" id="projects">
+      <div class="section-header-block">
+        <h2 class="section-heading">02 // Technical Projects</h2>
+        <span class="section-tagline">Verified repositories and implementations</span>
+      </div>
 
-      <div class="project-grid">
+      <div class="projects-grid">
 
+        <!-- Project 1: C/C++ Systems & DSA Practice -->
         <article class="project-card">
-          <h3>Portfolio Website</h3>
-
-          <p>This is my first Website</p>
-
-          <div class="project-tag">
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">JavaScript</span>
+          <div class="project-top">
+            <h3 class="project-title">c-cpp-systems-dsa</h3>
+            <span class="project-type">Academic Practice</span>
           </div>
 
-          <a class="button" href="#">View Project</a>
+          <p class="project-summary">
+            A repository containing hands-on implementations of classical data structures, algorithms, and POSIX system call exercises in C and modern C++.
+          </p>
+
+          <ul class="project-points">
+            <li>Dynamic memory allocation and pointer manipulation</li>
+            <li>Linked lists, binary search trees, and graph traversals</li>
+            <li>Practicing algorithmic complexity analysis and memory safety</li>
+          </ul>
+
+          <div class="project-tech">
+            <span class="tech-chip">C</span>
+            <span class="tech-chip">C++</span>
+            <span class="tech-chip">Linux API</span>
+            <span class="tech-chip">Makefile</span>
+          </div>
+
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="project-footer-link">
+            <span>view repository on github -></span>
+          </a>
         </article>
 
+        <!-- Project 2: Xyero.Dev Portfolio -->
         <article class="project-card">
-          <h3>Project 2</h3>
-
-          <p>Description goes here</p>
-
-          <div class="project-tag">
-            <span class="tag">Tag1</span>
-            <span class="tag">Tag2</span>
-            <span class="tag">Tag3</span>
+          <div class="project-top">
+            <h3 class="project-title">xyero.dev-portfolio</h3>
+            <span class="project-type">Web Project</span>
           </div>
 
-          <a class="button" href="#">View Project</a>
+          <p class="project-summary">
+            Personal developer portfolio designed with a wide responsive terminal aesthetic, fastfetch system monitor integration, and zero external framework overhead.
+          </p>
+
+          <ul class="project-points">
+            <li>Hand-crafted semantic HTML5, CSS3, and ES6 JavaScript</li>
+            <li>Multi-theme engine (Arch Cyan &amp; Gruvbox) with localStorage</li>
+            <li>Responsive grid layout utilizing full modern browser width</li>
+          </ul>
+
+          <div class="project-tech">
+            <span class="tech-chip">HTML5</span>
+            <span class="tech-chip">CSS3</span>
+            <span class="tech-chip">JavaScript</span>
+            <span class="tech-chip">Arch Theme</span>
+          </div>
+
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="project-footer-link">
+            <span>view source code -></span>
+          </a>
         </article>
 
+        <!-- Project 3: Dotfiles & Environment -->
         <article class="project-card">
-          <h3>Project 3</h3>
-
-          <p>Description goes here</p>
-
-          <div class="project-tag">
-            <span class="tag">Tag1</span>
-            <span class="tag">Tag2</span>
-            <span class="tag">Tag3</span>
+          <div class="project-top">
+            <h3 class="project-title">dotfiles-linux-config</h3>
+            <span class="project-type">Systems Config</span>
           </div>
 
-          <a class="button" href="#">View Project</a>
+          <p class="project-summary">
+            My personal development configuration files for an efficient, keyboard-centric programming setup on Arch Linux.
+          </p>
+
+          <ul class="project-points">
+            <li>Neovim configuration with LSP, treesitter, and keybindings</li>
+            <li>Custom Bash scripts for workflow automation and build tasks</li>
+            <li>Minimal system footprint tailored for distraction-free coding</li>
+          </ul>
+
+          <div class="project-tech">
+            <span class="tech-chip">Arch Linux</span>
+            <span class="tech-chip">Neovim</span>
+            <span class="tech-chip">Bash</span>
+            <span class="tech-chip">Git</span>
+          </div>
+
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="project-footer-link">
+            <span>view configurations -></span>
+          </a>
         </article>
 
       </div>
     </section>
 
-    <section class="social-media" id="contact">
-      <h2>Find Me</h2>
-      <ul>
-        <li><a href="https://github.com" target="_blank" rel="noopener noreferrer">
-            Github
-          </a></li>
-        <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">Linkedin</a></li>
-      </ul>
+    <!-- ======================================================================
+         Section 3: Skills & Technical Toolkit (Wide 4-Column Grid)
+         ====================================================================== -->
+    <section class="section-wrapper" id="skills">
+      <div class="section-header-block">
+        <h2 class="section-heading">03 // Technical Toolkit</h2>
+        <span class="section-tagline">Languages, systems, and core competencies</span>
+      </div>
+
+      <div class="skills-grid">
+        <!-- Box 1: Programming Languages -->
+        <div class="skill-box">
+          <h3 class="skill-category-title">Programming Languages</h3>
+          <ul class="skill-items-list">
+            <li>C (Memory management, Pointers)</li>
+            <li>C++ (STL, OOP, Fundamentals)</li>
+            <li>Python (Scripting, Tooling)</li>
+            <li>Bash (Shell automation)</li>
+          </ul>
+        </div>
+
+        <!-- Box 2: Systems & Tools -->
+        <div class="skill-box">
+          <h3 class="skill-category-title">Systems &amp; Tools</h3>
+          <ul class="skill-items-list">
+            <li>Arch Linux (Daily driver environment)</li>
+            <li>Git &amp; GitHub (Version control)</li>
+            <li>Neovim (Primary code editor)</li>
+            <li>GCC / Clang &amp; GNU Make</li>
+          </ul>
+        </div>
+
+        <!-- Box 3: CS Core -->
+        <div class="skill-box">
+          <h3 class="skill-category-title">Computer Science Core</h3>
+          <ul class="skill-items-list">
+            <li>Data Structures &amp; Algorithms</li>
+            <li>Operating System Principles</li>
+            <li>Computer Organization Basics</li>
+            <li>Computer Networking Basics</li>
+          </ul>
+        </div>
+
+        <!-- Box 4: Web Basics -->
+        <div class="skill-box">
+          <h3 class="skill-category-title">Web Basics</h3>
+          <ul class="skill-items-list">
+            <li>HTML5 (Semantic structuring)</li>
+            <li>CSS3 (Flexbox, Grid, Animations)</li>
+            <li>JavaScript (ES6+ DOM manipulation)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         Section 4: Interactive Terminal Console
+         ====================================================================== -->
+    <section class="section-wrapper" id="console">
+      <div class="section-header-block">
+        <h2 class="section-heading">04 // Interactive Console</h2>
+        <span class="section-tagline">Type 'help' to query commands</span>
+      </div>
+
+      <div class="interactive-terminal">
+        <div class="iterm-titlebar">
+          <div class="window-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <span>xyero@archlinux: ~ (console)</span>
+          <span>utf-8</span>
+        </div>
+
+        <div class="iterm-inner">
+          <div class="iterm-output" id="termOutput">Type 'help' for available commands (academics, skills, projects, contact, clear).</div>
+
+          <form class="iterm-form" id="termForm" autocomplete="off">
+            <span class="iterm-prompt">xyero@arch:~$</span>
+            <input type="text" id="termInput" class="iterm-input" placeholder="help" aria-label="Interactive terminal command input">
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         Section 5: Personal Discipline & Interests (Wide 3-Card Grid)
+         ====================================================================== -->
+    <section class="section-wrapper" id="interests">
+      <div class="section-header-block">
+        <h2 class="section-heading">05 // Personal Discipline &amp; Interests</h2>
+        <span class="section-tagline">Habits, consistency, and focus outside programming</span>
+      </div>
+
+      <div class="interests-grid">
+        <div class="interest-card">
+          <h3 class="interest-title">Systems Programming</h3>
+          <p class="interest-desc">
+            Deeply curious about operating system internals, Linux kernel mechanics, and writing performance-conscious software in C and C++.
+          </p>
+        </div>
+
+        <div class="interest-card">
+          <h3 class="interest-title">Bodybuilding &amp; Fitness</h3>
+          <p class="interest-desc">
+            Dedicated to daily strength training and physical fitness. The principles of progressive overload, consistency, and discipline directly inform my approach to learning complex technical subjects.
+          </p>
+        </div>
+
+        <div class="interest-card">
+          <h3 class="interest-title">Tactical &amp; Strategy Gaming</h3>
+          <p class="interest-desc">
+            Enjoy strategy and competitive tactical games that emphasize analytical decision making, rapid adaptation, and teamwork.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         Section 6: Contact & Academic Inquiry (Wide 2-Column Split)
+         ====================================================================== -->
+    <section class="section-wrapper" id="contact">
+      <div class="section-header-block">
+        <h2 class="section-heading">06 // Contact &amp; Academic Inquiries</h2>
+        <span class="section-tagline">Communication channels for internship opportunities</span>
+      </div>
+
+      <div class="contact-container">
+        <!-- Direct Communication Channels -->
+        <div class="contact-card-main">
+          <div class="contact-prompt-heading">Direct Channels:</div>
+          <ul class="contact-channels">
+            <li class="contact-channel-item">
+              <span class="channel-label">Email:</span>
+              <span class="channel-link">
+                <a href="mailto:debanjan.cs@example.com" class="copy-trigger" data-copy="debanjan.cs@example.com" title="Click to copy email">debanjan.cs@example.com</a>
+              </span>
+            </li>
+            <li class="contact-channel-item">
+              <span class="channel-label">GitHub:</span>
+              <span class="channel-link">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer">github.com (Debanjan)</a>
+              </span>
+            </li>
+            <li class="contact-channel-item">
+              <span class="channel-label">LinkedIn:</span>
+              <span class="channel-link">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">linkedin.com/in/debanjan</a>
+              </span>
+            </li>
+          </ul>
+
+          <div style="margin-top: 10px; padding-top: 12px; border-top: 1px dashed var(--border); font-size: 12.5px; color: var(--fg-muted);">
+            Location: India &bull; Open for on-site &amp; remote summer internships across IITs, NITs, and GFTIs.
+          </div>
+        </div>
+
+        <!-- Note to Faculty & Recruiters -->
+        <div class="internship-note-box">
+          <div class="internship-note-title">For Professors &amp; Research Advisors:</div>
+          <p>
+            If you are a faculty member or research advisor considering candidates for summer research projects or research fellowships, I would welcome the opportunity to discuss how my foundational background in C/C++, algorithms, and Linux systems can support your laboratory's ongoing work.
+          </p>
+          <p style="margin-top: 6px;">
+            Formal CV and academic transcripts are available upon request via email.
+          </p>
+        </div>
+      </div>
     </section>
 
   </main>
 
-  <footer>
-    <p>© 2026 Debanjan</p>
+  <!-- Full-Width Site Footer -->
+  <footer class="site-footer">
+    <span>Debanjan (Xyero.Dev) &bull; B.Tech Computer Science Undergraduate</span>
+    <span>Arch Linux &bull; Neovim &bull; C / C++ &bull; 2026</span>
   </footer>
 
+  <script src="js/main.js"></script>
 </body>
-
 </html>
