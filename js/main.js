@@ -1,14 +1,17 @@
 /**
  * Debanjan (Xyero.Dev) - Minimal Terminal Portfolio Scripts
- * Handles theme switcher and interactive console
+ * Handles theme switcher, interactive console, and live GitHub repository synchronization
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initTerminal();
+  initGitHubSync();
 });
 
-/* Theme Switcher */
+/* ==========================================================================
+   1. Theme Switcher (Arch Cyan <-> Gruvbox)
+   ========================================================================== */
 function initTheme() {
   const toggleBtn = document.getElementById('themeToggle');
   const saved = localStorage.getItem('site_theme') || 'arch';
@@ -32,7 +35,126 @@ function applyTheme(theme) {
   }
 }
 
-/* Interactive Terminal */
+/* ==========================================================================
+   2. Live GitHub Repository Dynamic Synchronization
+   Auto-fetches from https://api.github.com/users/XyerO0/repos
+   Updates in real-time when repositories are created or deleted!
+   ========================================================================== */
+let activeReposList = [
+  { name: 'portfolio', html_url: 'https://github.com/XyerO0/portfolio', description: 'Personal developer portfolio website engineered with a terminal aesthetic and live GitHub sync.' },
+  { name: 'projectAlpha', html_url: 'https://github.com/XyerO0/projectAlpha', description: 'Initial software development project exploring programming fundamentals and code structure.' }
+];
+
+function initGitHubSync() {
+  const grid = document.getElementById('projectsGrid');
+  const statusText = document.getElementById('syncStatusText');
+  const syncBtn = document.getElementById('manualSyncBtn');
+  const username = 'XyerO0';
+
+  async function fetchRepos(isManual = false) {
+    if (syncBtn) {
+      syncBtn.classList.add('syncing');
+      syncBtn.textContent = 'syncing...';
+    }
+
+    try {
+      const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`, {
+        headers: { 'Accept': 'application/vnd.github.v3+json' }
+      });
+
+      if (!res.ok) {
+        throw new Error(`GitHub API HTTP ${res.status}`);
+      }
+
+      const repos = await res.json();
+      if (Array.isArray(repos) && repos.length > 0) {
+        activeReposList = repos;
+        renderProjects(repos, grid);
+        if (statusText) {
+          statusText.textContent = `live-sync: ${repos.length} repositories`;
+        }
+        localStorage.setItem('xyero_cached_repos', JSON.stringify(repos));
+        localStorage.setItem('xyero_cache_time', Date.now());
+      }
+    } catch (err) {
+      // Fallback: check localStorage cache
+      const cached = localStorage.getItem('xyero_cached_repos');
+      if (cached) {
+        try {
+          const cachedRepos = JSON.parse(cached);
+          if (Array.isArray(cachedRepos) && cachedRepos.length > 0) {
+            activeReposList = cachedRepos;
+            renderProjects(cachedRepos, grid);
+            if (statusText) {
+              statusText.textContent = `cached-sync: ${cachedRepos.length} repositories`;
+            }
+          }
+        } catch (_) {}
+      } else if (statusText) {
+        statusText.textContent = `live-sync: github.com/${username}`;
+      }
+    } finally {
+      if (syncBtn) {
+        syncBtn.classList.remove('syncing');
+        syncBtn.textContent = isManual ? 'synced!' : 'sync now';
+        if (isManual) {
+          setTimeout(() => {
+            syncBtn.textContent = 'sync now';
+          }, 2000);
+        }
+      }
+    }
+  }
+
+  function renderProjects(repos, container) {
+    if (!container) return;
+    container.innerHTML = '';
+
+    repos.forEach(repo => {
+      const card = document.createElement('article');
+      card.className = 'project-card';
+
+      const repoName = escapeHtml(repo.name);
+      const repoDesc = escapeHtml(repo.description || 'Public repository by XyerO0 on GitHub.');
+      const repoUrl = escapeHtml(repo.html_url);
+      const isFork = repo.fork;
+      const lang = repo.language ? escapeHtml(repo.language) : 'Code';
+      const updatedDate = repo.pushed_at ? new Date(repo.pushed_at).toISOString().split('T')[0] : '';
+
+      card.innerHTML = `
+        <div class="project-top">
+          <h3 class="project-title">${repoName}</h3>
+          <span class="project-type">${isFork ? 'Forked Repo' : 'Public Repository'}</span>
+        </div>
+
+        <p class="project-summary">${repoDesc}</p>
+
+        <div class="project-tech">
+          <span class="tech-chip">${lang}</span>
+          ${repo.stargazers_count > 0 ? `<span class="tech-chip">stars: ${repo.stargazers_count}</span>` : ''}
+          ${updatedDate ? `<span class="tech-chip">updated: ${updatedDate}</span>` : ''}
+        </div>
+
+        <a href="${repoUrl}" target="_blank" rel="noopener noreferrer" class="project-footer-link">
+          <span>view repository on github -></span>
+        </a>
+      `;
+
+      container.appendChild(card);
+    });
+  }
+
+  if (syncBtn) {
+    syncBtn.addEventListener('click', () => fetchRepos(true));
+  }
+
+  // Initial fetch on page load
+  fetchRepos(false);
+}
+
+/* ==========================================================================
+   3. Interactive Terminal Console
+   ========================================================================== */
 function initTerminal() {
   const form = document.getElementById('termForm');
   const input = document.getElementById('termInput');
@@ -45,7 +167,7 @@ function initTerminal() {
   about       - profile and focus
   academics   - B.Tech degree, coursework and research focus
   skills      - programming languages and tools
-  projects    - technical repositories
+  projects    - technical repositories (live-synced)
   fastfetch   - system information
   contact     - email, GitHub, LinkedIn
   clear       - clear output`,
@@ -66,10 +188,10 @@ Systems:     Arch Linux (Daily driver), Git, Neovim (LSP), GCC / Make
 Core CS:     Data Structures & Algorithms, Operating Systems Concepts
 Web Basics:  HTML5, CSS3, JavaScript`,
 
-    projects: () => `Technical Repositories:
-1. c-cpp-systems-dsa    - Hands-on data structures, algorithms, and POSIX exercises in C/C++.
-2. xyero.dev-portfolio  - Responsive terminal-themed developer portfolio.
-3. dotfiles-linux       - Tailored Neovim and Arch Linux environment configurations.`,
+    projects: () => {
+      const lines = activeReposList.map((r, i) => `${i + 1}. ${r.name.padEnd(16)} - ${r.html_url}`);
+      return `GitHub Repositories (github.com/XyerO0):\n${lines.join('\n')}`;
+    },
 
     fastfetch: () => `OS:         Arch Linux x86_64
 Host:       Debanjan Workstation
@@ -80,7 +202,7 @@ User:       xyero (Debanjan)`,
 
     contact: () => `Contact & Inquiry:
 Email:    debanjan.cs@example.com
-GitHub:   https://github.com
+GitHub:   https://github.com/XyerO0
 LinkedIn: https://linkedin.com`,
 
     clear: () => {
@@ -108,4 +230,14 @@ LinkedIn: https://linkedin.com`,
     output.scrollTop = output.scrollHeight;
     input.value = '';
   });
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }

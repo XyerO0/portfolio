@@ -78,7 +78,7 @@
         <div class="hero-cta">
           <a href="#contact" class="btn-primary">contact debanjan -></a>
           <a href="#projects" class="btn-secondary">view projects</a>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn-secondary">github profile</a>
+          <a href="https://github.com/XyerO0" target="_blank" rel="noopener noreferrer" class="btn-secondary">github profile</a>
         </div>
       </div>
 
@@ -222,100 +222,76 @@
     </section>
 
     <!-- ======================================================================
-         Section 2: Projects (Wide 3-Card Grid)
+         Section 2: Projects (Live Synchronized with GitHub)
          ====================================================================== -->
     <section class="section-wrapper" id="projects">
       <div class="section-header-block">
         <h2 class="section-heading">02 // Technical Projects</h2>
-        <span class="section-tagline">Verified repositories and implementations</span>
+        <div class="sync-status-wrapper">
+          <span class="sync-badge" id="syncStatus">
+            <span class="pulse-dot"></span>
+            <span id="syncStatusText">live-sync: github.com/XyerO0</span>
+          </span>
+          <button id="manualSyncBtn" class="btn-sync" type="button" title="Refresh live repositories from GitHub">sync now</button>
+        </div>
       </div>
 
-      <div class="projects-grid">
+      <div class="projects-grid" id="projectsGrid">
 
-        <!-- Project 1: C/C++ Systems & DSA Practice -->
+        <!-- Project 1: portfolio -->
         <article class="project-card">
           <div class="project-top">
-            <h3 class="project-title">c-cpp-systems-dsa</h3>
-            <span class="project-type">Academic Practice</span>
+            <h3 class="project-title">portfolio</h3>
+            <span class="project-type">Public Repository</span>
           </div>
 
           <p class="project-summary">
-            A repository containing hands-on implementations of classical data structures, algorithms, and POSIX system call exercises in C and modern C++.
+            Personal developer portfolio website engineered with a terminal aesthetic, wide responsive layout, fastfetch system monitor, and live GitHub repository synchronization.
           </p>
 
           <ul class="project-points">
-            <li>Dynamic memory allocation and pointer manipulation</li>
-            <li>Linked lists, binary search trees, and graph traversals</li>
-            <li>Practicing algorithmic complexity analysis and memory safety</li>
-          </ul>
-
-          <div class="project-tech">
-            <span class="tech-chip">C</span>
-            <span class="tech-chip">C++</span>
-            <span class="tech-chip">Linux API</span>
-            <span class="tech-chip">Makefile</span>
-          </div>
-
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="project-footer-link">
-            <span>view repository on github -></span>
-          </a>
-        </article>
-
-        <!-- Project 2: Xyero.Dev Portfolio -->
-        <article class="project-card">
-          <div class="project-top">
-            <h3 class="project-title">xyero.dev-portfolio</h3>
-            <span class="project-type">Web Project</span>
-          </div>
-
-          <p class="project-summary">
-            Personal developer portfolio designed with a wide responsive terminal aesthetic, fastfetch system monitor integration, and zero external framework overhead.
-          </p>
-
-          <ul class="project-points">
-            <li>Hand-crafted semantic HTML5, CSS3, and ES6 JavaScript</li>
+            <li>Dynamic real-time synchronization with GitHub REST API</li>
+            <li>Semantic HTML5, CSS3, and modern vanilla JavaScript</li>
             <li>Multi-theme engine (Arch Cyan &amp; Gruvbox) with localStorage</li>
-            <li>Responsive grid layout utilizing full modern browser width</li>
           </ul>
 
           <div class="project-tech">
             <span class="tech-chip">HTML5</span>
             <span class="tech-chip">CSS3</span>
             <span class="tech-chip">JavaScript</span>
-            <span class="tech-chip">Arch Theme</span>
+            <span class="tech-chip">GitHub API</span>
           </div>
 
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="project-footer-link">
-            <span>view source code -></span>
+          <a href="https://github.com/XyerO0/portfolio" target="_blank" rel="noopener noreferrer" class="project-footer-link">
+            <span>view repository on github -></span>
           </a>
         </article>
 
-        <!-- Project 3: Dotfiles & Environment -->
+        <!-- Project 2: projectAlpha -->
         <article class="project-card">
           <div class="project-top">
-            <h3 class="project-title">dotfiles-linux-config</h3>
-            <span class="project-type">Systems Config</span>
+            <h3 class="project-title">projectAlpha</h3>
+            <span class="project-type">Public Repository</span>
           </div>
 
           <p class="project-summary">
-            My personal development configuration files for an efficient, keyboard-centric programming setup on Arch Linux.
+            First software project repository on GitHub exploring core programming concepts, logic structuring, and version-controlled workflow.
           </p>
 
           <ul class="project-points">
-            <li>Neovim configuration with LSP, treesitter, and keybindings</li>
-            <li>Custom Bash scripts for workflow automation and build tasks</li>
-            <li>Minimal system footprint tailored for distraction-free coding</li>
+            <li>Structured codebase and modular implementation</li>
+            <li>Version controlled with Git and hosted on GitHub</li>
+            <li>Automatically synchronized with portfolio via GitHub API</li>
           </ul>
 
           <div class="project-tech">
-            <span class="tech-chip">Arch Linux</span>
-            <span class="tech-chip">Neovim</span>
-            <span class="tech-chip">Bash</span>
             <span class="tech-chip">Git</span>
+            <span class="tech-chip">Development</span>
+            <span class="tech-chip">Open Source</span>
           </div>
 
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="project-footer-link">
-            <span>view configurations -></span>
+          <a href="https://github.com/XyerO0/projectAlpha" target="_blank" rel="noopener noreferrer" class="project-footer-link">
+            <span>view repository on github -></span>
           </a>
         </article>
 
@@ -464,7 +440,7 @@
             <li class="contact-channel-item">
               <span class="channel-label">GitHub:</span>
               <span class="channel-link">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer">github.com (Debanjan)</a>
+                <a href="https://github.com/XyerO0" target="_blank" rel="noopener noreferrer">github.com (Debanjan)</a>
               </span>
             </li>
             <li class="contact-channel-item">

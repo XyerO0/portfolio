@@ -569,10 +569,54 @@ a:hover {
 
 .section-header-block {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border);
   padding-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sync-status-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--accent);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.btn-sync {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-sync:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-sync.syncing {
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .section-heading {

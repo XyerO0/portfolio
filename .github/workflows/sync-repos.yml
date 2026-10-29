@@ -1,0 +1,44 @@
+name: Sync GitHub Repositories
+
+on:
+  schedule:
+    # Automatically sync every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    # Allows manual trigger from GitHub Actions tab
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch and synchronize repositories
+        run: node scripts/sync-github.js
+
+      - name: Commit and push changes if updated
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain index.html)" ]; then
+            git add index.html
+            git commit -m "chore(sync): update repositories from GitHub [skip ci]"
+            git push
+          else
+            console.log "No changes detected. Repositories are up to date."
+          fi
