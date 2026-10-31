@@ -11,28 +11,47 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   1. Theme Switcher (Gruvbox <-> Arch Cyan)
+   1. Theme System (7 Cult-Classic Hacker/Terminal Themes)
+   Supported: gruvbox (default), arch, catppuccin, nord, tokyonight, dracula, matrix
    ========================================================================== */
+const AVAILABLE_THEMES = [
+  'gruvbox',
+  'arch',
+  'catppuccin',
+  'nord',
+  'tokyonight',
+  'dracula',
+  'matrix'
+];
+
 function initTheme() {
   const toggleBtn = document.getElementById('themeToggle');
-  const saved = localStorage.getItem('site_theme') || 'gruvbox';
-  applyTheme(saved);
+  const saved = localStorage.getItem('site_theme');
+  const initialTheme = (saved && AVAILABLE_THEMES.includes(saved)) ? saved : 'gruvbox';
+  applyTheme(initialTheme);
 
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
       const current = document.documentElement.getAttribute('data-theme') || 'gruvbox';
-      const next = current === 'gruvbox' ? 'arch' : 'gruvbox';
-      applyTheme(next);
+      const currentIndex = AVAILABLE_THEMES.indexOf(current);
+      const nextIndex = (currentIndex + 1) % AVAILABLE_THEMES.length;
+      const nextTheme = AVAILABLE_THEMES[nextIndex];
+      applyTheme(nextTheme);
     });
   }
 }
 
 function applyTheme(theme) {
+  if (!AVAILABLE_THEMES.includes(theme)) {
+    theme = 'gruvbox';
+  }
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('site_theme', theme);
   const toggleBtn = document.getElementById('themeToggle');
   if (toggleBtn) {
     toggleBtn.textContent = `theme: ${theme}`;
+    const nextIdx = (AVAILABLE_THEMES.indexOf(theme) + 1) % AVAILABLE_THEMES.length;
+    toggleBtn.title = `Active: ${theme} (Click to switch to ${AVAILABLE_THEMES[nextIdx]})`;
   }
   if (window.updateGridTheme) {
     window.updateGridTheme();
@@ -173,6 +192,7 @@ function initTerminal() {
   skills      - programming languages and tools
   projects    - technical repositories (live-synced)
   fastfetch   - system information
+  theme [opt] - switch or list themes (gruvbox, arch, nord, catppuccin...)
   contact     - email, GitHub, LinkedIn
   clear       - clear output`,
 
@@ -204,10 +224,35 @@ Editor:     Neovim
 Shell:      bash / zsh
 User:       xyero (Debanjan)`,
 
+    theme: (arg) => {
+      if (!arg) {
+        const current = document.documentElement.getAttribute('data-theme') || 'gruvbox';
+        return `Current active theme: ${current}
+
+Available themes:
+  * gruvbox     [default] (warm retro dark)
+  * arch        (Arch Linux electric cyan)
+  * catppuccin  (mocha mauve modern rice)
+  * nord        (arctic ice frost)
+  * tokyonight  (Tokyo cyberpunk neon)
+  * dracula     (vampire purple & pink)
+  * matrix      (terminal phosphor green)
+
+Usage: theme <name> (e.g. 'theme nord', 'theme arch')`;
+      }
+
+      const target = arg.trim().toLowerCase();
+      if (AVAILABLE_THEMES.includes(target)) {
+        applyTheme(target);
+        return `Theme switched to '${target}'.`;
+      }
+      return `Unknown theme '${target}'. Available: ${AVAILABLE_THEMES.join(', ')}`;
+    },
+
     contact: () => `Contact & Inquiry:
-Email:    debanjan.cs@example.com
+Email:    debanjanbaidya6@gmail.com
 GitHub:   https://github.com/XyerO0
-LinkedIn: https://linkedin.com`,
+LinkedIn: https://linkedin.com/in/debanjan-baidya-007722301`,
 
     clear: () => {
       output.textContent = '';
@@ -217,18 +262,22 @@ LinkedIn: https://linkedin.com`,
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const raw = input.value.trim().toLowerCase();
+    const raw = input.value.trim();
     if (!raw) return;
 
-    if (raw === 'clear') {
+    const parts = raw.split(/\s+/);
+    const cmd = parts[0].toLowerCase();
+    const arg = parts.slice(1).join(' ');
+
+    if (cmd === 'clear') {
       commands.clear();
       input.value = '';
       return;
     }
 
-    const res = commands[raw]
-      ? commands[raw]()
-      : `bash: command not found: ${raw}. Type 'help' for available commands.`;
+    const res = commands[cmd]
+      ? commands[cmd](arg)
+      : `bash: command not found: ${cmd}. Type 'help' for available commands.`;
 
     output.textContent += (output.textContent ? '\n\n' : '') + `$ ${raw}\n${res}`;
     output.scrollTop = output.scrollHeight;
@@ -269,34 +318,64 @@ function initDynamicGrid() {
   let offsetX = 0;
   let offsetY = 0;
 
-  // Dynamic theme colors (default: Gruvbox)
-  let themeColors = {
-    line: 'rgba(60, 56, 54, 0.24)',
-    accent: '#7daea3',
-    accentLight: '#89bf82',
-    accentRgb: [125, 174, 163],
-    accentGlow: 'rgba(125, 174, 163, 0.05)'
+  // Dynamic theme colors across 7 themes
+  const THEME_GRID_PALETTES = {
+    gruvbox: {
+      line: 'rgba(60, 56, 54, 0.24)',
+      accent: '#7daea3',
+      accentLight: '#89bf82',
+      accentRgb: [125, 174, 163],
+      accentGlow: 'rgba(125, 174, 163, 0.05)'
+    },
+    arch: {
+      line: 'rgba(26, 37, 56, 0.22)',
+      accent: '#1793d1',
+      accentLight: '#38bdf8',
+      accentRgb: [23, 147, 209],
+      accentGlow: 'rgba(23, 147, 209, 0.05)'
+    },
+    catppuccin: {
+      line: 'rgba(54, 58, 79, 0.26)',
+      accent: '#cba6f7',
+      accentLight: '#b4befe',
+      accentRgb: [203, 166, 247],
+      accentGlow: 'rgba(203, 166, 247, 0.05)'
+    },
+    nord: {
+      line: 'rgba(76, 86, 106, 0.24)',
+      accent: '#88c0d0',
+      accentLight: '#81a1c1',
+      accentRgb: [136, 192, 208],
+      accentGlow: 'rgba(136, 192, 208, 0.05)'
+    },
+    tokyonight: {
+      line: 'rgba(47, 53, 73, 0.26)',
+      accent: '#7aa2f7',
+      accentLight: '#7dcfff',
+      accentRgb: [122, 162, 247],
+      accentGlow: 'rgba(122, 162, 247, 0.05)'
+    },
+    dracula: {
+      line: 'rgba(68, 71, 90, 0.26)',
+      accent: '#bd93f9',
+      accentLight: '#ff79c6',
+      accentRgb: [189, 147, 249],
+      accentGlow: 'rgba(189, 147, 249, 0.05)'
+    },
+    matrix: {
+      line: 'rgba(27, 58, 27, 0.26)',
+      accent: '#22c55e',
+      accentLight: '#4ade80',
+      accentRgb: [34, 197, 94],
+      accentGlow: 'rgba(34, 197, 94, 0.05)'
+    }
   };
 
+  let themeColors = THEME_GRID_PALETTES.gruvbox;
+
   function updateColors() {
-    const isGruvbox = document.documentElement.getAttribute('data-theme') === 'gruvbox';
-    if (isGruvbox) {
-      themeColors = {
-        line: 'rgba(60, 56, 54, 0.24)',
-        accent: '#7daea3',
-        accentLight: '#89bf82',
-        accentRgb: [125, 174, 163],
-        accentGlow: 'rgba(125, 174, 163, 0.05)'
-      };
-    } else {
-      themeColors = {
-        line: 'rgba(26, 37, 56, 0.22)',
-        accent: '#1793d1',
-        accentLight: '#38bdf8',
-        accentRgb: [23, 147, 209],
-        accentGlow: 'rgba(23, 147, 209, 0.05)'
-      };
-    }
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'gruvbox';
+    themeColors = THEME_GRID_PALETTES[currentTheme] || THEME_GRID_PALETTES.gruvbox;
   }
 
   window.updateGridTheme = updateColors;
