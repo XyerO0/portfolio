@@ -11,17 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   1. Theme Switcher (Arch Cyan <-> Gruvbox)
+   1. Theme Switcher (Gruvbox <-> Arch Cyan)
    ========================================================================== */
 function initTheme() {
   const toggleBtn = document.getElementById('themeToggle');
-  const saved = localStorage.getItem('site_theme') || 'arch';
+  const saved = localStorage.getItem('site_theme') || 'gruvbox';
   applyTheme(saved);
 
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme') || 'arch';
-      const next = current === 'arch' ? 'gruvbox' : 'arch';
+      const current = document.documentElement.getAttribute('data-theme') || 'gruvbox';
+      const next = current === 'gruvbox' ? 'arch' : 'gruvbox';
       applyTheme(next);
     });
   }
@@ -269,13 +269,13 @@ function initDynamicGrid() {
   let offsetX = 0;
   let offsetY = 0;
 
-  // Dynamic theme colors
+  // Dynamic theme colors (default: Gruvbox)
   let themeColors = {
-    line: 'rgba(26, 37, 56, 0.22)',
-    accent: '#1793d1',
-    accentLight: '#38bdf8',
-    accentRgb: [23, 147, 209],
-    accentGlow: 'rgba(23, 147, 209, 0.05)'
+    line: 'rgba(60, 56, 54, 0.24)',
+    accent: '#7daea3',
+    accentLight: '#89bf82',
+    accentRgb: [125, 174, 163],
+    accentGlow: 'rgba(125, 174, 163, 0.05)'
   };
 
   function updateColors() {
