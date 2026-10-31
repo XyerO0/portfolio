@@ -252,7 +252,7 @@ Usage: theme <name> (e.g. 'theme nord', 'theme arch')`;
     contact: () => `Contact & Inquiry:
 Email:    debanjanbaidya6@gmail.com
 GitHub:   https://github.com/XyerO0
-LinkedIn: https://linkedin.com/in/debanjan-baidya-007722301`,
+LinkedIn: https://linkedin.com/in/debanjan-baidya-107566373`,
 
     clear: () => {
       output.textContent = '';

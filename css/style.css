@@ -557,12 +557,13 @@ a:hover {
   margin-top: 6px;
 }
 
+a.btn-primary,
 .btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background-color: var(--accent);
-  color: var(--bg);
+  color: var(--bg) !important;
   font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 600;
@@ -571,23 +572,38 @@ a:hover {
   border: 1px solid var(--accent);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  text-decoration: none;
+  text-decoration: none !important;
+  user-select: none;
 }
 
-.btn-primary:hover {
+a.btn-primary:hover,
+a.btn-primary:focus-visible,
+.btn-primary:hover,
+.btn-primary:focus-visible {
   background-color: var(--accent-light);
   border-color: var(--accent-light);
+  color: var(--bg) !important;
   transform: translateY(-2px);
-  text-decoration: none;
+  text-decoration: none !important;
   box-shadow: 0 4px 16px var(--accent-glow);
 }
 
+a.btn-primary:active,
+.btn-primary:active {
+  transform: translateY(0);
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg) !important;
+  box-shadow: 0 2px 6px var(--accent-glow);
+}
+
+a.btn-secondary,
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background-color: var(--bg-card);
-  color: var(--fg);
+  color: var(--fg) !important;
   font-family: var(--font-mono);
   font-size: 13px;
   padding: 9px 18px;
@@ -595,14 +611,26 @@ a:hover {
   border: 1px solid var(--border);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  text-decoration: none;
+  text-decoration: none !important;
+  user-select: none;
 }
 
-.btn-secondary:hover {
-  color: var(--accent);
-  border-color: var(--border-hover);
+a.btn-secondary:hover,
+a.btn-secondary:focus-visible,
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  color: var(--accent) !important;
+  border-color: var(--accent);
+  background-color: var(--bg-card-hover);
   transform: translateY(-2px);
-  text-decoration: none;
+  text-decoration: none !important;
+}
+
+a.btn-secondary:active,
+.btn-secondary:active {
+  transform: translateY(0);
+  color: var(--accent) !important;
+  background-color: var(--bg-subtle);
 }
 
 /* ==========================================================================
