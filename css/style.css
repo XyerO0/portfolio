@@ -20,7 +20,7 @@
 
   --accent: #1793d1;        /* Arch Cyan */
   --accent-light: #38bdf8;
-  --accent-glow: rgba(23, 147, 209, 0.16);
+  --accent-glow: rgba(23, 147, 209, 0.08);
   --green: #4ade80;
   --yellow: #facc15;
   --red: #f87171;
@@ -51,7 +51,7 @@
 
   --accent: #7daea3;        /* Gruvbox Aqua */
   --accent-light: #89bf82;
-  --accent-glow: rgba(125, 174, 163, 0.16);
+  --accent-glow: rgba(125, 174, 163, 0.08);
   --green: #a9b665;
   --yellow: #d8a657;
   --red: #ea6962;
@@ -91,8 +91,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Wide Background Grid Pattern */
-body::before {
+/* Dynamic Animated Background Grid Canvas */
+.bg-grid-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -2;
+  display: block;
+  opacity: 0.65;
+}
+
+/* Fallback static grid when dynamic canvas is not active */
+body:not(.canvas-active)::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -100,7 +113,7 @@ body::before {
     linear-gradient(to right, var(--border) 1px, transparent 1px),
     linear-gradient(to bottom, var(--border) 1px, transparent 1px);
   background-size: 44px 44px;
-  opacity: 0.24;
+  opacity: 0.12;
   pointer-events: none;
   z-index: -2;
 }
