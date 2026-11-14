@@ -296,7 +296,14 @@ function escapeHtml(str) {
 }
 
 /* ==========================================================================
-   4. Dynamic Animated Background Grid (Interactive Terminal Grid & Pulses)
+   4. Microarchitecture Bus & Memory Blueprint (Bespoke Systems Canvas)
+   Draws an authentic, low-level hardware blueprint:
+   - Major bus conduits every 4 tracks with integrated circuit vias and corner brackets
+   - Minor memory matrix with micro-dots & subtle breathing wave
+   - Sparse virtual memory offset labels (0x0040, 0x0100...) in monospace
+   - Orthogonal PCB trace packets that make 90-degree turns along bus channels
+   - Digital logic probe tracking cursor with [0xADDR] HUD tag & crosshair alignment
+   - Click bus broadcast wave sending orthogonal trace packets along all 4 vectors
    ========================================================================== */
 function initDynamicGrid() {
   const canvas = document.getElementById('bgGridCanvas');
@@ -312,58 +319,73 @@ function initDynamicGrid() {
   let height = 0;
   let dpr = 1;
 
-  const GRID_SIZE = 44;
+  const GRID_SIZE = 48;
+  const MAJOR_STEP = 4;
   let cols = 0;
   let rows = 0;
   let offsetX = 0;
   let offsetY = 0;
 
-  // Dynamic theme colors across 7 themes
+  // Dynamic theme colors across 7 themes (calibrated for high contrast & subtlety)
   const THEME_GRID_PALETTES = {
     gruvbox: {
-      line: 'rgba(60, 56, 54, 0.24)',
+      lineMajor: 'rgba(125, 174, 163, 0.16)',
+      lineMinor: 'rgba(60, 56, 54, 0.20)',
+      dotMinor: 'rgba(168, 153, 132, 0.14)',
       accent: '#7daea3',
       accentLight: '#89bf82',
       accentRgb: [125, 174, 163],
       accentGlow: 'rgba(125, 174, 163, 0.05)'
     },
     arch: {
-      line: 'rgba(26, 37, 56, 0.22)',
+      lineMajor: 'rgba(23, 147, 209, 0.18)',
+      lineMinor: 'rgba(26, 37, 56, 0.20)',
+      dotMinor: 'rgba(139, 156, 182, 0.14)',
       accent: '#1793d1',
       accentLight: '#38bdf8',
       accentRgb: [23, 147, 209],
       accentGlow: 'rgba(23, 147, 209, 0.05)'
     },
     catppuccin: {
-      line: 'rgba(54, 58, 79, 0.26)',
+      lineMajor: 'rgba(203, 166, 247, 0.18)',
+      lineMinor: 'rgba(54, 58, 79, 0.22)',
+      dotMinor: 'rgba(166, 173, 200, 0.15)',
       accent: '#cba6f7',
       accentLight: '#b4befe',
       accentRgb: [203, 166, 247],
       accentGlow: 'rgba(203, 166, 247, 0.05)'
     },
     nord: {
-      line: 'rgba(76, 86, 106, 0.24)',
+      lineMajor: 'rgba(136, 192, 208, 0.18)',
+      lineMinor: 'rgba(76, 86, 106, 0.20)',
+      dotMinor: 'rgba(216, 222, 233, 0.14)',
       accent: '#88c0d0',
       accentLight: '#81a1c1',
       accentRgb: [136, 192, 208],
       accentGlow: 'rgba(136, 192, 208, 0.05)'
     },
     tokyonight: {
-      line: 'rgba(47, 53, 73, 0.26)',
+      lineMajor: 'rgba(122, 162, 247, 0.18)',
+      lineMinor: 'rgba(47, 53, 73, 0.22)',
+      dotMinor: 'rgba(154, 165, 206, 0.15)',
       accent: '#7aa2f7',
       accentLight: '#7dcfff',
       accentRgb: [122, 162, 247],
       accentGlow: 'rgba(122, 162, 247, 0.05)'
     },
     dracula: {
-      line: 'rgba(68, 71, 90, 0.26)',
+      lineMajor: 'rgba(189, 147, 249, 0.18)',
+      lineMinor: 'rgba(68, 71, 90, 0.22)',
+      dotMinor: 'rgba(191, 191, 209, 0.14)',
       accent: '#bd93f9',
       accentLight: '#ff79c6',
       accentRgb: [189, 147, 249],
       accentGlow: 'rgba(189, 147, 249, 0.05)'
     },
     matrix: {
-      line: 'rgba(27, 58, 27, 0.26)',
+      lineMajor: 'rgba(34, 197, 94, 0.20)',
+      lineMinor: 'rgba(27, 58, 27, 0.22)',
+      dotMinor: 'rgba(134, 239, 172, 0.15)',
       accent: '#22c55e',
       accentLight: '#4ade80',
       accentRgb: [34, 197, 94],
@@ -388,14 +410,14 @@ function initDynamicGrid() {
     targetX: -1000,
     targetY: -1000,
     active: false,
-    radius: 180
+    radius: 170
   };
 
-  // Light pulses travelling along grid segments
+  // Orthogonal PCB trace packets
   const pulses = [];
-  const MAX_PULSES = 3;
+  const MAX_PULSES = 4;
 
-  // Click shockwaves / ripples
+  // Expanding diamond/square bus waves
   const ripples = [];
 
   // Animation frame handle
@@ -423,7 +445,7 @@ function initDynamicGrid() {
     cols = Math.ceil(width / GRID_SIZE) + 1;
     rows = Math.ceil(height / GRID_SIZE) + 1;
     offsetX = Math.floor((width % GRID_SIZE) / 2);
-    offsetY = 0;
+    offsetY = Math.floor((height % GRID_SIZE) / 2);
   }
 
   window.addEventListener('resize', resize, { passive: true });
@@ -442,55 +464,70 @@ function initDynamicGrid() {
 
   window.addEventListener('click', (e) => {
     if (prefersReducedMotion) return;
-    ripples.push({
-      x: e.clientX,
-      y: e.clientY,
-      r: 4,
-      maxR: Math.min(280, Math.max(width, height) * 0.35),
-      speed: 4.8,
-      alpha: 0.45
-    });
 
-    // Also trigger 1 subtle instant pulse originating from clicked intersection
     const clickCol = Math.round((e.clientX - offsetX) / GRID_SIZE);
     const clickRow = Math.round((e.clientY - offsetY) / GRID_SIZE);
     const startX = offsetX + clickCol * GRID_SIZE;
     const startY = offsetY + clickRow * GRID_SIZE;
 
-    const dirs = [
-      { axis: 'x', dir: 1 },
-      { axis: 'x', dir: -1 },
-      { axis: 'y', dir: 1 },
-      { axis: 'y', dir: -1 }
-    ];
-    const picked = dirs[Math.floor(Math.random() * dirs.length)];
-    spawnPulse(startX, startY, picked.axis, picked.dir, 2.8, GRID_SIZE * (2 + Math.floor(Math.random() * 3)));
+    // 1. Bus shockwave (expanding diamond)
+    ripples.push({
+      x: startX,
+      y: startY,
+      size: 4,
+      maxSize: Math.min(300, Math.max(width, height) * 0.35),
+      speed: 4.5,
+      alpha: 0.5
+    });
+
+    // 2. Broadcast orthogonal trace signals in all 4 cardinal directions
+    spawnPulse(startX, startY, 1, 0, 2.4, GRID_SIZE * 6, true);
+    spawnPulse(startX, startY, -1, 0, 2.4, GRID_SIZE * 6, true);
+    spawnPulse(startX, startY, 0, 1, 2.4, GRID_SIZE * 6, true);
+    spawnPulse(startX, startY, 0, -1, 2.4, GRID_SIZE * 6, true);
   }, { passive: true });
 
-  function spawnPulse(x, y, axis, dir, speed, maxDist) {
-    if (pulses.length >= MAX_PULSES) return;
+  function spawnPulse(x, y, dirX, dirY, speed, maxDist, isMajor = false) {
+    if (pulses.length >= MAX_PULSES + 4) return;
     pulses.push({
-      startX: x,
-      startY: y,
-      axis: axis,
-      dir: dir,
-      speed: speed || (1.6 + Math.random() * 1.2),
+      x,
+      y,
+      dirX,
+      dirY,
+      speed: speed || (1.4 + Math.random() * 0.9),
+      len: 34 + Math.random() * 26,
       dist: 0,
-      maxDist: maxDist || (GRID_SIZE * (2 + Math.floor(Math.random() * 4))),
-      len: 36 + Math.random() * 24
+      maxDist: maxDist || (GRID_SIZE * (3 + Math.floor(Math.random() * 5))),
+      turnsLeft: Math.random() > 0.4 ? 1 : 0,
+      turnCooldown: 12,
+      isMajor
     });
   }
 
   function maybeSpawnRandomPulse() {
     if (prefersReducedMotion || pulses.length >= MAX_PULSES) return;
-    if (Math.random() < 0.015) {
-      const c = Math.floor(Math.random() * cols);
-      const r = Math.floor(Math.random() * rows);
+    if (Math.random() < 0.02) {
+      // Prefer spawning on major bus lanes
+      const isMajor = Math.random() > 0.3;
+      let c, r;
+      if (isMajor) {
+        if (Math.random() > 0.5) {
+          c = Math.floor(Math.random() * Math.ceil(cols / MAJOR_STEP)) * MAJOR_STEP;
+          r = Math.floor(Math.random() * rows);
+        } else {
+          c = Math.floor(Math.random() * cols);
+          r = Math.floor(Math.random() * Math.ceil(rows / MAJOR_STEP)) * MAJOR_STEP;
+        }
+      } else {
+        c = Math.floor(Math.random() * cols);
+        r = Math.floor(Math.random() * rows);
+      }
+
       const x = offsetX + c * GRID_SIZE;
       const y = offsetY + r * GRID_SIZE;
-      const axis = Math.random() > 0.5 ? 'x' : 'y';
+      const horizontal = Math.random() > 0.5;
       const dir = Math.random() > 0.5 ? 1 : -1;
-      spawnPulse(x, y, axis, dir);
+      spawnPulse(x, y, horizontal ? dir : 0, horizontal ? 0 : dir, null, null, isMajor);
     }
   }
 
@@ -508,119 +545,204 @@ function initDynamicGrid() {
 
     // Smooth mouse lerping
     if (mouse.active) {
-      mouse.x += (mouse.targetX - mouse.x) * 0.12;
-      mouse.y += (mouse.targetY - mouse.y) * 0.12;
+      mouse.x += (mouse.targetX - mouse.x) * 0.14;
+      mouse.y += (mouse.targetY - mouse.y) * 0.14;
     } else {
-      mouse.x += (-1000 - mouse.x) * 0.12;
-      mouse.y += (-1000 - mouse.y) * 0.12;
+      mouse.x += (-1000 - mouse.x) * 0.14;
+      mouse.y += (-1000 - mouse.y) * 0.14;
     }
 
     ctx.clearRect(0, 0, width, height);
 
-    // 1. Draw base grid lines
+    const [ar, ag, ab] = themeColors.accentRgb;
+
+    // ------------------------------------------------------------------------
+    // 1. Minor Memory Matrix (Hairlines & Dots)
+    // ------------------------------------------------------------------------
     ctx.lineWidth = 1;
-    ctx.strokeStyle = themeColors.line;
+    ctx.strokeStyle = themeColors.lineMinor;
     ctx.beginPath();
 
+    // Minor hairlines
     for (let c = 0; c <= cols; c++) {
+      if (c % MAJOR_STEP === 0) continue;
       const x = Math.floor(offsetX + c * GRID_SIZE) + 0.5;
       ctx.moveTo(x, 0);
       ctx.lineTo(x, height);
     }
-
     for (let r = 0; r <= rows; r++) {
+      if (r % MAJOR_STEP === 0) continue;
       const y = Math.floor(offsetY + r * GRID_SIZE) + 0.5;
       ctx.moveTo(0, y);
       ctx.lineTo(width, y);
     }
     ctx.stroke();
 
-    // 2. Dynamic spotlight & line highlight near cursor
-    if (mouse.x > -200 && mouse.x < width + 200 && mouse.y > -200 && mouse.y < height + 200) {
-      const radGlow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, mouse.radius);
-      radGlow.addColorStop(0, themeColors.accentGlow);
-      radGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = radGlow;
-      ctx.fillRect(mouse.x - mouse.radius, mouse.y - mouse.radius, mouse.radius * 2, mouse.radius * 2);
+    // Minor memory vertices (micro-dots with breathing wave)
+    ctx.fillStyle = themeColors.dotMinor;
+    for (let c = 0; c <= cols; c++) {
+      if (c % MAJOR_STEP === 0) continue;
+      const x = Math.floor(offsetX + c * GRID_SIZE);
 
-      const [ar, ag, ab] = themeColors.accentRgb;
-      const minC = Math.max(0, Math.floor((mouse.x - mouse.radius - offsetX) / GRID_SIZE));
-      const maxC = Math.min(cols, Math.ceil((mouse.x + mouse.radius - offsetX) / GRID_SIZE));
-      const minR = Math.max(0, Math.floor((mouse.y - mouse.radius - offsetY) / GRID_SIZE));
-      const maxR = Math.min(rows, Math.ceil((mouse.y + mouse.radius - offsetY) / GRID_SIZE));
+      for (let r = 0; r <= rows; r++) {
+        if (r % MAJOR_STEP === 0) continue;
+        const y = Math.floor(offsetY + r * GRID_SIZE);
 
-      // Highlighted vertical lines
-      for (let c = minC; c <= maxC; c++) {
-        const x = Math.floor(offsetX + c * GRID_SIZE) + 0.5;
-        const dx = Math.abs(x - mouse.x);
-        if (dx < mouse.radius) {
-          const dySpan = Math.sqrt(mouse.radius * mouse.radius - dx * dx);
-          const y1 = Math.max(0, mouse.y - dySpan);
-          const y2 = Math.min(height, mouse.y + dySpan);
+        const dx = x - mouse.x;
+        const dy = y - mouse.y;
+        const dist = Math.hypot(dx, dy);
 
-          const gradV = ctx.createLinearGradient(x, y1, x, y2);
-          gradV.addColorStop(0, 'rgba(0,0,0,0)');
-          const alphaCenter = (1 - dx / mouse.radius) * 0.18;
-          gradV.addColorStop(0.5, `rgba(${ar}, ${ag}, ${ab}, ${alphaCenter.toFixed(3)})`);
-          gradV.addColorStop(1, 'rgba(0,0,0,0)');
-
-          ctx.strokeStyle = gradV;
-          ctx.beginPath();
-          ctx.moveTo(x, y1);
-          ctx.lineTo(x, y2);
-          ctx.stroke();
+        let dotR = 0.8;
+        if (dist < mouse.radius) {
+          const boost = (1 - dist / mouse.radius);
+          dotR = 0.8 + boost * 0.8;
         }
+
+        ctx.beginPath();
+        ctx.arc(x + 0.5, y + 0.5, dotR, 0, Math.PI * 2);
+        ctx.fill();
       }
+    }
 
-      // Highlighted horizontal lines
-      for (let r = minR; r <= maxR; r++) {
-        const y = Math.floor(offsetY + r * GRID_SIZE) + 0.5;
-        const dy = Math.abs(y - mouse.y);
-        if (dy < mouse.radius) {
-          const dxSpan = Math.sqrt(mouse.radius * mouse.radius - dy * dy);
-          const x1 = Math.max(0, mouse.x - dxSpan);
-          const x2 = Math.min(width, mouse.x + dxSpan);
+    // ------------------------------------------------------------------------
+    // 2. Major Bus Conduits (System Architecture Traces)
+    // ------------------------------------------------------------------------
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = themeColors.lineMajor;
+    ctx.beginPath();
 
-          const gradH = ctx.createLinearGradient(x1, y, x2, y);
-          gradH.addColorStop(0, 'rgba(0,0,0,0)');
-          const alphaCenter = (1 - dy / mouse.radius) * 0.18;
-          gradH.addColorStop(0.5, `rgba(${ar}, ${ag}, ${ab}, ${alphaCenter.toFixed(3)})`);
-          gradH.addColorStop(1, 'rgba(0,0,0,0)');
+    for (let c = 0; c <= cols; c += MAJOR_STEP) {
+      const x = Math.floor(offsetX + c * GRID_SIZE) + 0.5;
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, height);
+    }
+    for (let r = 0; r <= rows; r += MAJOR_STEP) {
+      const y = Math.floor(offsetY + r * GRID_SIZE) + 0.5;
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+    }
+    ctx.stroke();
 
-          ctx.strokeStyle = gradH;
-          ctx.beginPath();
-          ctx.moveTo(x1, y);
-          ctx.lineTo(x2, y);
-          ctx.stroke();
+    // ------------------------------------------------------------------------
+    // 3. Major Bus Junctions (Circuit Vias, Brackets & Hex Labels)
+    // ------------------------------------------------------------------------
+    ctx.font = '8.5px "JetBrains Mono", monospace';
+    ctx.textBaseline = 'top';
+
+    for (let c = 0; c <= cols; c += MAJOR_STEP) {
+      const x = Math.floor(offsetX + c * GRID_SIZE);
+
+      for (let r = 0; r <= rows; r += MAJOR_STEP) {
+        const y = Math.floor(offsetY + r * GRID_SIZE);
+
+        const dx = x - mouse.x;
+        const dy = y - mouse.y;
+        const dist = Math.hypot(dx, dy);
+
+        let viaAlpha = 0.28;
+        let scale = 1;
+        if (dist < mouse.radius) {
+          const prox = (1 - dist / mouse.radius);
+          viaAlpha = 0.28 + prox * 0.45;
+          scale = 1 + prox * 0.3;
+        }
+
+        // Circuit Via (outer square pad + center dot)
+        ctx.strokeStyle = `rgba(${ar}, ${ag}, ${ab}, ${viaAlpha.toFixed(3)})`;
+        ctx.lineWidth = 1;
+        const padSize = 5 * scale;
+        ctx.strokeRect(x - padSize / 2 + 0.5, y - padSize / 2 + 0.5, padSize, padSize);
+
+        ctx.fillStyle = `rgba(${ar}, ${ag}, ${ab}, ${(viaAlpha * 0.9).toFixed(3)})`;
+        ctx.fillRect(x, y, 1, 1);
+
+        // Corner registration ticks (┌ ┐ └ ┘)
+        const arm = 3;
+        const off = 8;
+        ctx.beginPath();
+        // Top-left
+        ctx.moveTo(x - off, y - off + arm);
+        ctx.lineTo(x - off, y - off);
+        ctx.lineTo(x - off + arm, y - off);
+        // Top-right
+        ctx.moveTo(x + off - arm, y - off);
+        ctx.lineTo(x + off, y - off);
+        ctx.lineTo(x + off, y - off + arm);
+        // Bottom-left
+        ctx.moveTo(x - off, y + off - arm);
+        ctx.lineTo(x - off, y + off);
+        ctx.lineTo(x - off + arm, y + off);
+        // Bottom-right
+        ctx.moveTo(x + off - arm, y + off);
+        ctx.lineTo(x + off, y + off);
+        ctx.lineTo(x + off, y + off - arm);
+        ctx.stroke();
+
+        // Sparse Hex Memory Address Labels (objdump / hardware map aesthetic)
+        if ((c / MAJOR_STEP) % 2 === 0 && (r / MAJOR_STEP) % 2 === 0) {
+          const hexAddr = (((c * 32 + r * 16) & 0xFFFF) >>> 0).toString(16).toUpperCase().padStart(4, '0');
+          ctx.fillStyle = `rgba(${ar}, ${ag}, ${ab}, 0.12)`;
+          ctx.fillText(`0x${hexAddr}`, x + 6, y + 6);
         }
       }
     }
 
-    // 3. Shockwave / Click Ripples
+    // ------------------------------------------------------------------------
+    // 4. Click Bus Shockwaves (Expanding Diamond Registration Waves)
+    // ------------------------------------------------------------------------
     for (let i = ripples.length - 1; i >= 0; i--) {
       const rip = ripples[i];
-      rip.r += rip.speed;
+      rip.size += rip.speed;
       rip.alpha *= 0.96;
 
-      if (rip.alpha < 0.01 || rip.r >= rip.maxR) {
+      if (rip.alpha < 0.01 || rip.size >= rip.maxSize) {
         ripples.splice(i, 1);
         continue;
       }
 
-      const [ar, ag, ab] = themeColors.accentRgb;
-      ctx.lineWidth = 1;
+      ctx.save();
+      ctx.translate(rip.x + 0.5, rip.y + 0.5);
+      ctx.rotate(Math.PI / 4); // diamond
+      ctx.lineWidth = 1.2;
       ctx.strokeStyle = `rgba(${ar}, ${ag}, ${ab}, ${rip.alpha.toFixed(3)})`;
-      ctx.beginPath();
-      ctx.arc(rip.x, rip.y, rip.r, 0, Math.PI * 2);
-      ctx.stroke();
+      ctx.strokeRect(-rip.size / 2, -rip.size / 2, rip.size, rip.size);
+      ctx.restore();
     }
 
-    // 4. Update & Draw Pulses (Data Packets)
+    // ------------------------------------------------------------------------
+    // 5. Orthogonal PCB Trace Packets (Data Signals with 90° Routing)
+    // ------------------------------------------------------------------------
     maybeSpawnRandomPulse();
 
     for (let i = pulses.length - 1; i >= 0; i--) {
       const p = pulses[i];
+      p.x += p.dirX * p.speed;
+      p.y += p.dirY * p.speed;
       p.dist += p.speed;
+      p.turnCooldown = Math.max(0, p.turnCooldown - 1);
+
+      // Check for orthogonal 90° turn at grid intersections
+      if (p.turnsLeft > 0 && p.turnCooldown === 0) {
+        if (p.dirX !== 0) {
+          const gridDiff = Math.abs((p.x - offsetX) % GRID_SIZE);
+          if (gridDiff < p.speed * 1.2) {
+            p.x = Math.round((p.x - offsetX) / GRID_SIZE) * GRID_SIZE + offsetX;
+            p.dirY = Math.random() > 0.5 ? 1 : -1;
+            p.dirX = 0;
+            p.turnsLeft -= 1;
+            p.turnCooldown = 30;
+          }
+        } else if (p.dirY !== 0) {
+          const gridDiff = Math.abs((p.y - offsetY) % GRID_SIZE);
+          if (gridDiff < p.speed * 1.2) {
+            p.y = Math.round((p.y - offsetY) / GRID_SIZE) * GRID_SIZE + offsetY;
+            p.dirX = Math.random() > 0.5 ? 1 : -1;
+            p.dirY = 0;
+            p.turnsLeft -= 1;
+            p.turnCooldown = 30;
+          }
+        }
+      }
 
       if (p.dist >= p.maxDist) {
         pulses.splice(i, 1);
@@ -635,84 +757,94 @@ function initDynamicGrid() {
         alpha = (1 - progress) / 0.3;
       }
 
-      const [ar, ag, ab] = themeColors.accentRgb;
+      const tailX = p.x - p.dirX * p.len;
+      const tailY = p.y - p.dirY * p.len;
 
-      let headX, headY, tailX, tailY;
-      if (p.axis === 'x') {
-        headX = p.startX + p.dist * p.dir;
-        headY = p.startY;
-        tailX = headX - p.len * p.dir;
-        tailY = headY;
-      } else {
-        headX = p.startX;
-        headY = p.startY + p.dist * p.dir;
-        tailX = headX;
-        tailY = headY - p.len * p.dir;
-      }
-
-      const pGrad = ctx.createLinearGradient(tailX, tailY, headX, headY);
+      // Trace gradient
+      const pGrad = ctx.createLinearGradient(tailX, tailY, p.x, p.y);
       pGrad.addColorStop(0, 'rgba(0,0,0,0)');
-      pGrad.addColorStop(1, `rgba(${ar}, ${ag}, ${ab}, ${(alpha * 0.32).toFixed(3)})`);
+      pGrad.addColorStop(1, `rgba(${ar}, ${ag}, ${ab}, ${(alpha * 0.45).toFixed(3)})`);
 
-      ctx.lineWidth = 1.4;
+      ctx.lineWidth = p.isMajor ? 1.6 : 1.2;
       ctx.strokeStyle = pGrad;
       ctx.beginPath();
-      ctx.moveTo(tailX, tailY);
-      ctx.lineTo(headX, headY);
+      ctx.moveTo(tailX + 0.5, tailY + 0.5);
+      ctx.lineTo(p.x + 0.5, p.y + 0.5);
       ctx.stroke();
 
-      ctx.fillStyle = `rgba(${ar}, ${ag}, ${ab}, ${(alpha * 0.5).toFixed(3)})`;
+      // Signal Head (phosphor dot)
+      ctx.fillStyle = `rgba(${ar}, ${ag}, ${ab}, ${(alpha * 0.85).toFixed(3)})`;
       ctx.beginPath();
-      ctx.arc(headX, headY, 1.2, 0, Math.PI * 2);
+      ctx.arc(p.x + 0.5, p.y + 0.5, p.isMajor ? 1.8 : 1.3, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    // 5. Grid Intersections (Crosshairs "+")
-    const [ar, ag, ab] = themeColors.accentRgb;
+    // ------------------------------------------------------------------------
+    // 6. Digital Logic Probe (Cursor Reticle & [0xADDR] HUD Tag)
+    // ------------------------------------------------------------------------
+    if (mouse.x > -100 && mouse.x < width + 100 && mouse.y > -100 && mouse.y < height + 100) {
+      // Soft radial trace glow
+      const radGlow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, mouse.radius);
+      radGlow.addColorStop(0, themeColors.accentGlow);
+      radGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = radGlow;
+      ctx.fillRect(mouse.x - mouse.radius, mouse.y - mouse.radius, mouse.radius * 2, mouse.radius * 2);
 
-    for (let c = 0; c <= cols; c++) {
-      const x = Math.floor(offsetX + c * GRID_SIZE);
+      const probeCol = Math.round((mouse.x - offsetX) / GRID_SIZE);
+      const probeRow = Math.round((mouse.y - offsetY) / GRID_SIZE);
+      const probeX = Math.floor(offsetX + probeCol * GRID_SIZE) + 0.5;
+      const probeY = Math.floor(offsetY + probeRow * GRID_SIZE) + 0.5;
 
-      for (let r = 0; r <= rows; r++) {
-        const y = Math.floor(offsetY + r * GRID_SIZE);
+      const probeDist = Math.hypot(mouse.x - probeX, mouse.y - probeY);
+      if (probeDist < 140) {
+        const factor = Math.pow(1 - probeDist / 140, 1.2);
 
-        const dx = x - mouse.x;
-        const dy = y - mouse.y;
-        const dist = Math.hypot(dx, dy);
+        // Alignment crosshair beams
+        const beamSpan = 70 * factor;
+        const beamH = ctx.createLinearGradient(probeX - beamSpan, probeY, probeX + beamSpan, probeY);
+        beamH.addColorStop(0, 'rgba(0,0,0,0)');
+        beamH.addColorStop(0.5, `rgba(${ar}, ${ag}, ${ab}, ${(factor * 0.35).toFixed(3)})`);
+        beamH.addColorStop(1, 'rgba(0,0,0,0)');
 
-        // Ambient breathing wave (soft & calm)
-        const wave = Math.sin(time * 0.8 + c * 0.18 + r * 0.18) * 0.03;
-        let baseAlpha = 0.08 + wave;
-        let armLen = 2.0;
-
-        // Mouse proximity boost
-        if (dist < mouse.radius) {
-          const mouseFactor = Math.pow(1 - dist / mouse.radius, 1.4);
-          baseAlpha = Math.min(0.4, baseAlpha + mouseFactor * 0.25);
-          armLen = 2.0 + mouseFactor * 1.5;
-        }
-
-        // Ripple proximity boost
-        for (let ri = 0; ri < ripples.length; ri++) {
-          const rip = ripples[ri];
-          const ripDist = Math.abs(Math.hypot(x - rip.x, y - rip.y) - rip.r);
-          if (ripDist < 25) {
-            const ripFactor = (1 - ripDist / 25) * rip.alpha;
-            baseAlpha = Math.min(0.5, baseAlpha + ripFactor * 0.25);
-            armLen = Math.max(armLen, 2.0 + ripFactor * 1.5);
-          }
-        }
-
-        ctx.strokeStyle = `rgba(${ar}, ${ag}, ${ab}, ${baseAlpha.toFixed(3)})`;
         ctx.lineWidth = 1;
+        ctx.strokeStyle = beamH;
         ctx.beginPath();
-        // Horizontal tick
-        ctx.moveTo(x - armLen + 0.5, y + 0.5);
-        ctx.lineTo(x + armLen + 0.5, y + 0.5);
-        // Vertical tick
-        ctx.moveTo(x + 0.5, y - armLen + 0.5);
-        ctx.lineTo(x + 0.5, y + armLen + 0.5);
+        ctx.moveTo(probeX - beamSpan, probeY);
+        ctx.lineTo(probeX + beamSpan, probeY);
         ctx.stroke();
+
+        const beamV = ctx.createLinearGradient(probeX, probeY - beamSpan, probeX, probeY + beamSpan);
+        beamV.addColorStop(0, 'rgba(0,0,0,0)');
+        beamV.addColorStop(0.5, `rgba(${ar}, ${ag}, ${ab}, ${(factor * 0.35).toFixed(3)})`);
+        beamV.addColorStop(1, 'rgba(0,0,0,0)');
+
+        ctx.strokeStyle = beamV;
+        ctx.beginPath();
+        ctx.moveTo(probeX, probeY - beamSpan);
+        ctx.lineTo(probeX, probeY + beamSpan);
+        ctx.stroke();
+
+        // Probe target brackets ([ ])
+        ctx.strokeStyle = `rgba(${ar}, ${ag}, ${ab}, ${(factor * 0.6).toFixed(3)})`;
+        const bSize = 6;
+        ctx.beginPath();
+        // Left bracket [
+        ctx.moveTo(probeX - bSize, probeY - bSize);
+        ctx.lineTo(probeX - bSize - 2, probeY - bSize);
+        ctx.lineTo(probeX - bSize - 2, probeY + bSize);
+        ctx.lineTo(probeX - bSize, probeY + bSize);
+        // Right bracket ]
+        ctx.moveTo(probeX + bSize, probeY - bSize);
+        ctx.lineTo(probeX + bSize + 2, probeY - bSize);
+        ctx.lineTo(probeX + bSize + 2, probeY + bSize);
+        ctx.lineTo(probeX + bSize, probeY + bSize);
+        ctx.stroke();
+
+        // Memory pointer HUD readout
+        const hexOffset = (((probeCol * 64 + probeRow * 16) & 0xFFFF) >>> 0).toString(16).toUpperCase().padStart(4, '0');
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.fillStyle = `rgba(${ar}, ${ag}, ${ab}, ${(factor * 0.5).toFixed(3)})`;
+        ctx.fillText(`[0x${hexOffset}]`, probeX + 10, probeY - 10);
       }
     }
 
